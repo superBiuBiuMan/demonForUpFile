@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <input type="file" id="fileInput">
+    <button id="btn">上传文件</button>
+    <script>
+        //这里不用jQuery获取是后期需要用到DOM元素,用jQuery也可以,用get或则[]就可以转为DOM元素
+        var fileInput = document.getElementById("fileInput");
+        var $btn = $("#btn");
+        $btn.click(function () {
+            //创建表单
+            //这里new FormData不传入参数,因为这里只是上传一个图片,不存在其他数据,如果要传,传入form标签对应的DOM元素
+            var formData = new FormData();
+            //传入文件的key和value
+            //fileInput.files[0]获取第一个文件,为什么是数组的我猜是因为开发js的为了和多文件上传一样用
+            formData.append("fileusers", fileInput.files[0]); 
+            //注意formData.append和formData.set区别
+            $.ajax({
+                "type": "post",
+                "url": "http://localhost:3000/file",
+                "contentType": false,
+                "processData": false,
+                "data": formData,
+                "success": function (data) {
+                    console.log(data);
+                },
+                "error": function (error) {
+                    console.log("错误了", error);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
